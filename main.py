@@ -9,8 +9,8 @@ class DrawInfo:
     BLACK = 0, 0, 0
     WHITE = 255, 255, 255
     GREEN = 0, 255, 0
-    RED = 255, 0, 0
-    BACKGROUND_COLOR = WHITE
+    PINK = 251, 72, 196
+    BACKGROUND_COLOR = 12, 12, 12
 
     GRAY = [(128, 128, 128),
             (160, 160, 160),
@@ -34,7 +34,7 @@ class DrawInfo:
         self.min_val = min(lst)
         self.max_val = max(lst)
 
-        self.block_width = round((self.width - self.SIDE_PAD) / len(lst))
+        self.block_width = math.floor((self.width - self.SIDE_PAD) / len(lst))
         self.block_height = math.floor((self.height - self.TOP_PAD) / (self.max_val - self.min_val))
         self.start_x = self.SIDE_PAD // 2  # start at half of padding
 
@@ -53,12 +53,11 @@ def draw(draw_info):
     controls = draw_info.FONT.render("R - Reset |"
                                      " SPACE - Start Sorting |"
                                      " A - Ascending |"
-                                     " D - Descending", 1, draw_info.BLACK)  # antialias
+                                     " D - Descending", 1, draw_info.WHITE)  # antialias
     draw_info.window.blit(controls, (draw_info.width/2 - controls.get_width()/2, 5))
 
     sortText = draw_info.FONT.render("B - Bubble Sort |"
-                                     " I - Insertion Sort",
-                                     1, draw_info.BLACK)  # antialias
+                                     " I - Insertion Sort", 1, draw_info.WHITE)  # antialias
     draw_info.window.blit(sortText, (draw_info.width / 2 - sortText.get_width() / 2, 35))
 
     draw_list(draw_info)
@@ -101,7 +100,7 @@ def bubble_sort(draw_info, ascending=True):  # true default
 
             if (num1 > num2 and ascending) or (num1 < num2 and not ascending):
                 lst[j], lst[j + 1] = lst[j + 1], lst[j]  # swap values in one line without temp values
-                draw_list(draw_info, {j: draw_info.GREEN, j + 1: draw_info.RED}, True)
+                draw_list(draw_info, {j: draw_info.GREEN, j + 1: draw_info.PINK}, True)
                 yield True  # pauses the function until it is called again (yield control)
     return lst
 
@@ -110,9 +109,9 @@ def bubble_sort(draw_info, ascending=True):  # true default
 def main():
     clock = pygame.time.Clock()  # regulates loop time
 
-    n = 50
+    n = 100
     min_val = 0
-    max_val = 100
+    max_val = 300
 
     lst = generate_starting_list(n, min_val, max_val)
     draw_info = DrawInfo(800, 600, lst)
@@ -125,7 +124,7 @@ def main():
 
     run = True
     while run:
-        clock.tick(60)
+        clock.tick(4800)
 
         if sorting:
             try:
